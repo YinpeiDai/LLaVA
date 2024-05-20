@@ -393,4 +393,13 @@ conv_templates = {
 
 
 if __name__ == "__main__":
-    print(default_conversation.get_prompt())
+    for k in conv_templates:
+        try:
+            print(k)
+            v = conv_templates[k].copy()
+            v.append_message("USER", "Hello")
+            # v.append_message("ASSISTANT", "Hi")
+            print(v.get_prompt())
+            print('---')
+        except Exception as e:
+            pass

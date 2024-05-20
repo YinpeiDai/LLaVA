@@ -137,6 +137,16 @@ def process_anyres_image(image, processor, grid_pinpoints):
 
     patches = divide_to_patches(image_padded, processor.crop_size['height'])
 
+    # # plot all patches
+    # import matplotlib.pyplot as plt
+    # fig, axes = plt.subplots(1, len(patches) + 1, figsize=(20, 5))
+    # axes[0].imshow(image_padded)
+    # axes[0].set_title('Original Image')
+    # for i, patch in enumerate(patches):
+    #     axes[i + 1].imshow(patch)
+    #     axes[i + 1].set_title(f'Patch {i + 1}')
+    # plt.savefig('patches.png')
+
     image_original_resize = image.resize((processor.size['shortest_edge'], processor.size['shortest_edge']))
 
     image_patches = [image_original_resize] + patches
@@ -174,7 +184,7 @@ def process_images(images, image_processor, model_cfg):
     elif image_aspect_ratio == "anyres":
         for image in images:
             image = process_anyres_image(image, image_processor, model_cfg.image_grid_pinpoints)
-            new_images.append(image)
+            new_images.append(image) # [b, np, c, 336, 336]
     else:
         return image_processor(images, return_tensors='pt')['pixel_values']
     if all(x.shape == new_images[0].shape for x in new_images):

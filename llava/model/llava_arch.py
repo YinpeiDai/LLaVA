@@ -138,8 +138,8 @@ class LlavaMetaForCausalLM(ABC):
         return self.get_model().get_vision_tower()
 
     def encode_images(self, images):
-        image_features = self.get_model().get_vision_tower()(images)
-        image_features = self.get_model().mm_projector(image_features)
+        image_features = self.get_model().get_vision_tower()(images) # image: [bs, 3, 336, 336] -> [bs, 576, 1024]
+        image_features = self.get_model().mm_projector(image_features) # -> [bs, 576, 4096]
         return image_features
 
     def prepare_inputs_labels_for_multimodal(
