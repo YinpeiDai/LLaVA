@@ -179,6 +179,10 @@ def process_images(images, image_processor, model_cfg):
     if image_aspect_ratio == 'pad':
         for image in images:
             image = expand2square(image, tuple(int(x*255) for x in image_processor.image_mean))
+            # # plot the image
+            # import matplotlib.pyplot as plt
+            # plt.imshow(image)
+            # plt.savefig('image_pad.png')
             image = image_processor.preprocess(image, return_tensors='pt')['pixel_values'][0]
             new_images.append(image)
     elif image_aspect_ratio == "anyres":
